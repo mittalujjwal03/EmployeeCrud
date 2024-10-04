@@ -5,44 +5,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Create Employee</h1>
 
-<h4>Employee</h4>
+<h4>Employee Information</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" placeholder="Enter first name" aria-label="First Name" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" placeholder="Enter last name" aria-label="Last Name" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Position" class="control-label"></label>
-                <input asp-for="Position" class="form-control" />
+                <input asp-for="Position" class="form-control" placeholder="Enter position" aria-label="Position" />
                 <span asp-validation-for="Position" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Salary" class="control-label"></label>
-                <input asp-for="Salary" class="form-control" />
+                <input asp-for="Salary" class="form-control" placeholder="Enter salary" aria-label="Salary" />
                 <span asp-validation-for="Salary" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DepartmentId" class="control-label"></label>
-                <select asp-for="DepartmentId" class ="form-control" asp-items="ViewBag.DepartmentId"></select>
+                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId" aria-label="Select Department"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary" aria-label="Back to Employee List">Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

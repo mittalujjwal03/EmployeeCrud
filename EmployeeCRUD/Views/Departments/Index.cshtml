@@ -1,36 +1,48 @@
 ﻿@model IEnumerable<EmployeeCRUD.Models.Department>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Departments";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Departments</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary mt-2 mb-1">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DepartmentName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepartmentName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.DepartmentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DepartmentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DepartmentId">Delete</a>
-            </td>
-        </tr>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning" role="alert">
+        No departments available. Please create a new department.
+    </div>
 }
-    </tbody>
-</table>
+else
+{
+    <table class="table table-responsive table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().DepartmentName)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DepartmentName)
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <a asp-action="Edit" asp-route-id="@item.DepartmentId" class="btn btn-primary me-2" aria-label="Edit @item.DepartmentName">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.DepartmentId" class="btn btn-secondary me-2" aria-label="View Details of @item.DepartmentName">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.DepartmentId" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this department?');" aria-label="Delete @item.DepartmentName">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

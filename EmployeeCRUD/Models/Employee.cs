@@ -5,10 +5,15 @@ namespace EmployeeCRUD.Models
 {
     public class Employee
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EmployeeId { get; set; }
 
         [Required]
-        public string? Name { get; set; }
+        public string? FirstName { get; set; }
+
+        [Required]
+        public string? LastName { get; set; }
 
         public string? Position { get; set; }
 

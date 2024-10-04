@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using EmployeeCRUD.DataAccessLayer;
 using EmployeeCRUD.Models;
 
 namespace EmployeeCRUD.Controllers
@@ -18,13 +19,13 @@ namespace EmployeeCRUD.Controllers
             _context = context;
         }
 
-        // GET: Departments
+      
         public async Task<IActionResult> Index()
         {
             return View(await _context.Departments.ToListAsync());
         }
 
-        // GET: Departments/Details/5
+       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,15 +43,12 @@ namespace EmployeeCRUD.Controllers
             return View(department);
         }
 
-        // GET: Departments/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Departments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("DepartmentId,DepartmentName")] Department department)
@@ -80,9 +78,6 @@ namespace EmployeeCRUD.Controllers
             return View(department);
         }
 
-        // POST: Departments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("DepartmentId,DepartmentName")] Department department)
@@ -99,8 +94,8 @@ namespace EmployeeCRUD.Controllers
                     _context.Update(department);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
+                catch (DbUpdateConcurrencyException ex)
+                { 
                     if (!DepartmentExists(department.DepartmentId))
                     {
                         return NotFound();
@@ -110,12 +105,18 @@ namespace EmployeeCRUD.Controllers
                         throw;
                     }
                 }
+                catch (Exception ex)
+                {
+                    
+                    ModelState.AddModelError("", "An error occurred while saving changes. Please try again.");
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(department);
         }
 
-        // GET: Departments/Delete/5
+
+       
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,7 +134,6 @@ namespace EmployeeCRUD.Controllers
             return View(department);
         }
 
-        // POST: Departments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Edit Department</h1>
 
-<h4>Department</h4>
+<h4>Department Information</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,18 +16,18 @@
             <input type="hidden" asp-for="DepartmentId" />
             <div class="form-group">
                 <label asp-for="DepartmentName" class="control-label"></label>
-                <input asp-for="DepartmentName" class="form-control" />
+                <input asp-for="DepartmentName" class="form-control" placeholder="Enter department name" aria-label="Department Name" />
                 <span asp-validation-for="DepartmentName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" aria-label="Save Department" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary" aria-label="Back to Department List">Back to List</a>
 </div>
 
 @section Scripts {
