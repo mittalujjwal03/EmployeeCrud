@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EmployeeCRUD.DataAccessLayer;
@@ -18,14 +14,13 @@ namespace EmployeeCRUD.Controllers
         {
             _context = context;
         }
-
-      
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departments.ToListAsync());
+            var departments = await _context.Departments
+                .Include(d => d.Employees)
+                .ToListAsync();
+            return View(departments);
         }
-
-       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,13 +37,10 @@ namespace EmployeeCRUD.Controllers
 
             return View(department);
         }
-
         public IActionResult Create()
         {
             return View();
         }
-
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("DepartmentId,DepartmentName")] Department department)
@@ -61,8 +53,6 @@ namespace EmployeeCRUD.Controllers
             }
             return View(department);
         }
-
-        // GET: Departments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,7 +67,6 @@ namespace EmployeeCRUD.Controllers
             }
             return View(department);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("DepartmentId,DepartmentName")] Department department)
@@ -114,16 +103,12 @@ namespace EmployeeCRUD.Controllers
             }
             return View(department);
         }
-
-
-       
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
             var department = await _context.Departments
                 .FirstOrDefaultAsync(m => m.DepartmentId == id);
             if (department == null)
@@ -133,7 +118,6 @@ namespace EmployeeCRUD.Controllers
 
             return View(department);
         }
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -147,7 +131,6 @@ namespace EmployeeCRUD.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool DepartmentExists(int id)
         {
             return _context.Departments.Any(e => e.DepartmentId == id);
