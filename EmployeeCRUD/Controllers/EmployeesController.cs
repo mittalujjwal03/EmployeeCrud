@@ -23,7 +23,7 @@ namespace EmployeeCRUD.Controllers
         public async Task<IActionResult> Index()
         {
             var employees = await _context.Employees.Include(e => e.Department).ToListAsync();
-            return View(employees);
+            return View(employees); // Pass the list of employees to the view
         }
 
         // GET: Employees/Details/5  
@@ -51,7 +51,6 @@ namespace EmployeeCRUD.Controllers
         }
 
         // POST: Employees/Create  
-        // POST: Employees/Create  
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EmployeeId,FirstName,LastName,Position,Salary,DepartmentId")] Employee employee)
@@ -65,9 +64,8 @@ namespace EmployeeCRUD.Controllers
                     TempData["SuccessMessage"] = "Employee created successfully.";
                     return RedirectToAction(nameof(Index));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    
                     ModelState.AddModelError("", "An error occurred while creating the employee. Please try again.");
                 }
             }
@@ -75,6 +73,8 @@ namespace EmployeeCRUD.Controllers
             PopulateDepartmentsDropDownList(employee.DepartmentId);
             return View(employee);
         }
+
+        // GET: Employees/Edit/5  
         public async Task<IActionResult> Edit(int? id)
         {
             if (!id.HasValue)
@@ -108,7 +108,7 @@ namespace EmployeeCRUD.Controllers
                 {
                     _context.Update(employee);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Employee updated successfully."; // Success message
+                    TempData["SuccessMessage"] = "Employee updated successfully.";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -117,11 +117,10 @@ namespace EmployeeCRUD.Controllers
                     {
                         return NotFound();
                     }
-                    throw;
+                    throw; // Re-throw the exception
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    
                     ModelState.AddModelError("", "An error occurred while updating the employee. Please try again.");
                 }
             }
@@ -129,11 +128,12 @@ namespace EmployeeCRUD.Controllers
             PopulateDepartmentsDropDownList(employee.DepartmentId);
             return View(employee);
         }
+
         // GET: Employees/Delete/5  
         public async Task<IActionResult> Delete(int id)
         {
             var employee = await _context.Employees
-                .Include(e => e.Department) 
+                .Include(e => e.Department)
                 .FirstOrDefaultAsync(e => e.EmployeeId == id);
 
             if (employee == null)
@@ -153,6 +153,7 @@ namespace EmployeeCRUD.Controllers
             {
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Employee deleted successfully."; // Success message
             }
             return RedirectToAction(nameof(Index));
         }
