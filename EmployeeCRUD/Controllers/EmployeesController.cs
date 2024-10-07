@@ -23,7 +23,7 @@ namespace EmployeeCRUD.Controllers
         public async Task<IActionResult> Index()
         {
             var employees = await _context.Employees.Include(e => e.Department).ToListAsync();
-            return View(employees); // Pass the list of employees to the view
+            return View(employees); 
         }
 
         // GET: Employees/Details/5  
@@ -74,7 +74,7 @@ namespace EmployeeCRUD.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Edit/5  
+        // GET: Employees/Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (!id.HasValue)
@@ -92,7 +92,7 @@ namespace EmployeeCRUD.Controllers
             return View(employee);
         }
 
-        // POST: Employees/Edit/5  
+        // POST: Employees/Edit 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,FirstName,LastName,Position,Salary,DepartmentId")] Employee employee)
@@ -117,7 +117,7 @@ namespace EmployeeCRUD.Controllers
                     {
                         return NotFound();
                     }
-                    throw; // Re-throw the exception
+                    throw;
                 }
                 catch (Exception)
                 {
@@ -129,7 +129,7 @@ namespace EmployeeCRUD.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Delete/5  
+        // GET: Employees/Delete
         public async Task<IActionResult> Delete(int id)
         {
             var employee = await _context.Employees
@@ -153,7 +153,7 @@ namespace EmployeeCRUD.Controllers
             {
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Employee deleted successfully."; // Success message
+                TempData["SuccessMessage"] = "Employee deleted successfully."; 
             }
             return RedirectToAction(nameof(Index));
         }
