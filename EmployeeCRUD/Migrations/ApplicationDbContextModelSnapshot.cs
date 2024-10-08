@@ -34,6 +34,9 @@ namespace EmployeeCRUD.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("EmployeeCount")
+                        .HasColumnType("int");
+
                     b.HasKey("DepartmentId");
 
                     b.ToTable("Departments");

@@ -10,5 +10,7 @@ namespace EmployeeCRUD.Models
         public string? DepartmentName { get; set; }
 
         public ICollection<Employee>? Employees { get; set; }
+
+        public int EmployeeCount { get; set; }
     }
 }

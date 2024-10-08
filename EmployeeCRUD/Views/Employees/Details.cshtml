@@ -5,46 +5,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Employee Details</h1>
+<h1 class="mb-4">Employee Details</h1>
 
-<div class="border p-3 mb-3">
-    <h4>Employee Information</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Position)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Position)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Salary)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Salary)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
-        <dd class="col-sm-10">
-            @(Model.Department != null ? Html.DisplayFor(m => m.Department.DepartmentName) : "N/A")
-        </dd>
-    </dl>
+<div class="card">
+    <div class="card-body">
+        <h4>Employee Information</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Position)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Position)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Salary)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Salary)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Department)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Department.DepartmentName)
+            </dd>
+        </dl>
+    </div>
 </div>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.EmployeeId" class="btn btn-primary me-2" aria-label="Edit Employee">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary ms-1" aria-label="Back to Employee List">Back to List</a>
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.EmployeeId" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
 </div>

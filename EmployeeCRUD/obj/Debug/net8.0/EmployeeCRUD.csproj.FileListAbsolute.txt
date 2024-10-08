@@ -504,3 +504,5 @@ C:\Users\HP\Source\Repos\MVC_EmployeeCrud\EmployeeCRUD\obj\Debug\net8.0\scopedcs
 C:\Users\HP\Source\Repos\MVC_EmployeeCrud\EmployeeCRUD\obj\Debug\net8.0\Employee.18BA8678.Up2Date
 C:\Users\HP\Source\Repos\MVC_EmployeeCrud\EmployeeCRUD\obj\Debug\net8.0\EmployeeCRUD.genruntimeconfig.cache
 C:\Users\HP\Source\Repos\MVC_EmployeeCrud\EmployeeCRUD\obj\Debug\net8.0\ref\EmployeeCRUD.dll
+C:\Users\HP\Source\Repos\MVC_EmployeeCrud\EmployeeCRUD\bin\Debug\net8.0\System.Net.Http.Formatting.dll
+C:\Users\HP\Source\Repos\MVC_EmployeeCrud\EmployeeCRUD\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll

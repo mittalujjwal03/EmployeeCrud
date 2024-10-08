@@ -19,22 +19,24 @@ namespace EmployeeCRUD.Controllers
             _context = context;
         }
 
-        // GET: Employees  
+        // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var employees = await _context.Employees.Include(e => e.Department).ToListAsync();
-            return View(employees); 
+            var applicationDbContext = _context.Employees.Include(e => e.Department);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Employees/Details/5  
+        // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (!id.HasValue)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await GetEmployeeById(id.Value);
+            var employee = await _context.Employees
+                .Include(e => e.Department)
+                .FirstOrDefaultAsync(m => m.EmployeeId == id);
             if (employee == null)
             {
                 return NotFound();
@@ -43,56 +45,50 @@ namespace EmployeeCRUD.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Create  
+        // GET: Employees/Create
         public IActionResult Create()
         {
-            PopulateDepartmentsDropDownList();
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "DepartmentName");
             return View();
         }
 
-        // POST: Employees/Create  
+        // POST: Employees/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EmployeeId,FirstName,LastName,Position,Salary,DepartmentId")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Add(employee);
-                    await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Employee created successfully.";
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("", "An error occurred while creating the employee. Please try again.");
-                }
+                _context.Add(employee);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-
-            PopulateDepartmentsDropDownList(employee.DepartmentId);
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
-        // GET: Employees/Edit
+        // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (!id.HasValue)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await GetEmployeeById(id.Value);
+            var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
                 return NotFound();
             }
-
-            PopulateDepartmentsDropDownList(employee.DepartmentId);
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
-        // POST: Employees/Edit 
+        // POST: Employees/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,FirstName,LastName,Position,Salary,DepartmentId")] Employee employee)
@@ -108,8 +104,6 @@ namespace EmployeeCRUD.Controllers
                 {
                     _context.Update(employee);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Employee updated successfully.";
-                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,25 +111,28 @@ namespace EmployeeCRUD.Controllers
                     {
                         return NotFound();
                     }
-                    throw;
+                    else
+                    {
+                        throw;
+                    }
                 }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("", "An error occurred while updating the employee. Please try again.");
-                }
+                return RedirectToAction(nameof(Index));
             }
-
-            PopulateDepartmentsDropDownList(employee.DepartmentId);
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
-        // GET: Employees/Delete
-        public async Task<IActionResult> Delete(int id)
+        // GET: Employees/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var employee = await _context.Employees
                 .Include(e => e.Department)
-                .FirstOrDefaultAsync(e => e.EmployeeId == id);
-
+                .FirstOrDefaultAsync(m => m.EmployeeId == id);
             if (employee == null)
             {
                 return NotFound();
@@ -144,6 +141,7 @@ namespace EmployeeCRUD.Controllers
             return View(employee);
         }
 
+        // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -152,27 +150,15 @@ namespace EmployeeCRUD.Controllers
             if (employee != null)
             {
                 _context.Employees.Remove(employee);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Employee deleted successfully."; 
             }
+
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmployeeExists(int id)
         {
             return _context.Employees.Any(e => e.EmployeeId == id);
-        }
-
-        private async Task<Employee> GetEmployeeById(int id)
-        {
-            return await _context.Employees
-                .Include(e => e.Department)
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
-        }
-
-        private void PopulateDepartmentsDropDownList(int? selectedDepartmentId = null)
-        {
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "DepartmentName", selectedDepartmentId);
         }
     }
 }
